@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/sogent/CLionProjects/KCBankReportLab1/main.cpp
+iostream
+-
+fstream
+-
+vector
+-
+sstream
+-
+stdexcept
+-
+
