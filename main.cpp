@@ -23,6 +23,14 @@ int main() {
     int i;
     vector<string> lineAData;
     vector<string> lineUData;
+    KCBankAccounts addBankRecStruct;
+    vector<KCBankAccounts> addBankRecVec;
+    KCBankAccounts updateBankRecStruct;
+    vector<KCBankAccounts> updateBankRecVec;
+    KCBankAccounts errorBankRecStruct;
+    vector<KCBankAccounts> errorBankRecVec;
+    KCBankAccounts tempBankRecStruct;
+    vector <KCBankAccounts> tempBankRecVec;
 
     inFS.open("/Users/sogent/CLionProjects/KCBankReportLab1/CS201PGM2.csv");
     if (!inFS.is_open()) {
@@ -60,10 +68,15 @@ int main() {
     for(i=0;i<fileData.size();++i){
         if(fileData.at(i)=="A"){
             lineAData.push_back(fileData.at(i+1));
+
             lineAData.push_back(fileData.at(i+2));
+
             lineAData.push_back(fileData.at(i+3));
+
             lineAData.push_back(fileData.at(i+4));
+
             lineAData.push_back(fileData.at(i+5));
+
 
         }
     }
@@ -74,6 +87,9 @@ int main() {
     for(i=0;i<lineAData.size();++i){
         cout<<lineAData.at(i)<<endl;
     }
+
+    //add to struct?
+
 
     cout<<endl;
 
@@ -137,9 +153,14 @@ int main() {
     vector<int>updateAccountNumInt;
 
     //iterate through updateAccountNum and addAccountNum string vectors and add to new int vectors
+    //add to respective struct members?
     for(i=0;i<addAccountNumStr.size();++i){
         addAccountNumInt.push_back(stoi(addAccountNumStr.at(i)));
+
     }
+
+
+
 
     //check addAccountNumInt output
     for(int x:addAccountNumInt){
@@ -178,26 +199,34 @@ cout<<endl;
     vector<int>nonAccounts;
     vector<int>verifiedAccounts;
 
-    for(i=0;i<updateAccountNumInt.size();++i){
-        int key=updateAccountNumInt.at(i);
+    try {
 
-        if(find(addAccountNumInt.begin(), addAccountNumInt.end(), key) != addAccountNumInt.end()){
-            verifiedAccounts.push_back(key);
-        }else{
-            //throw a runtime_error here ("Error: account does not exist")
-            //also put result in error vector
-            nonAccounts.push_back(key);
+        for (i = 0; i < updateAccountNumInt.size(); ++i) {
+            int key = updateAccountNumInt.at(i);
+
+            if (find(addAccountNumInt.begin(), addAccountNumInt.end(), key) != addAccountNumInt.end()) {
+                verifiedAccounts.push_back(key);
+            } else {
+
+                //throw a runtime_error here ("Error: account does not exist")
+                //also put result in error vector
+                nonAccounts.push_back(key);
+            }
+
         }
+    }catch(runtime_error& e){
 
     }
 
-    //accounts not found
+    //accounts not found output
     cout<<endl;
     for(int m:nonAccounts){
         cout<<m<<endl;
     }
+    //push to error vector
 
-    //accounts found
+
+    //accounts found output
     cout<<endl;
     for(int n:verifiedAccounts){
         cout<<n<<endl;
