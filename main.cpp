@@ -104,30 +104,30 @@ int main() {
     //check if an account even exists or not
     //sort then loop through?
     //put all 'add' account numbers in their own vector
-    vector<string> addAccountNum;
+    vector<string> addAccountNumStr;
     for(i=0;i<lineAData.size();i+=5){
-        addAccountNum.push_back(lineAData.at(i));
+        addAccountNumStr.push_back(lineAData.at(i));
     };
     cout<<endl;
     cout<<endl;
 
     //check addAccountNum output
-    for(i=0;i<addAccountNum.size();++i){
-       cout<< addAccountNum.at(i)<<endl;
+    for(i=0;i<addAccountNumStr.size();++i){
+       cout<< addAccountNumStr.at(i)<<endl;
     }
 
     cout<<endl;
 
     //put all 'update' account numbers in their own vector
-    vector<string> updateAccountNum;
+    vector<string> updateAccountNumStr;
     for(i=0;i<lineUData.size();i+=4){
-        updateAccountNum.push_back(lineUData.at(i));
+        updateAccountNumStr.push_back(lineUData.at(i));
 
     }
 
     //check updateAccountNum output
-    for(i=0;i<updateAccountNum.size();++i){
-        cout<<updateAccountNum.at(i)<<endl;
+    for(i=0;i<updateAccountNumStr.size();++i){
+        cout<<updateAccountNumStr.at(i)<<endl;
     }
 
     cout<<endl;
@@ -137,8 +137,8 @@ int main() {
     vector<int>updateAccountNumInt;
 
     //iterate through updateAccountNum and addAccountNum string vectors and add to new int vectors
-    for(i=0;i<addAccountNum.size();++i){
-        addAccountNumInt.push_back(stoi(addAccountNum.at(i)));
+    for(i=0;i<addAccountNumStr.size();++i){
+        addAccountNumInt.push_back(stoi(addAccountNumStr.at(i)));
     }
 
     //check addAccountNumInt output
@@ -148,8 +148,9 @@ int main() {
 
     cout<<endl;
 
-    for(i=0;i<updateAccountNum.size();++i){
-        updateAccountNumInt.push_back(stoi(updateAccountNum.at(i)));
+    //converting updateAccountNum from string to int
+    for(i=0;i<updateAccountNumStr.size();++i){
+        updateAccountNumInt.push_back(stoi(updateAccountNumStr.at(i)));
     }
 
     //check updateAccountNumInt output
@@ -234,22 +235,22 @@ cout<<endl;
     ////////ERROR CHECKING ROUND 3: CONVERTING REST OF DATA TYPES, THIS FINNA GET MESSY
     //add account numbers and update account numbers already have data types changed
     //and are in their respective temp vectors (addAccountNumInt and updateAccountNumInt)
-    //need to change
-    // ADD: firstName (string) [6]X, lastname (string) [7]X, savingsBal (float) [8], checkingBal (float) [9]
-    //UPDATE:  saveOrChecking (string) [5], withdrawOrDeposit (string) [6], withdrawOrDepositAmt (float) [7]
+    //need to change ->
+    // ADD: firstName (string) [6]X, lastname (string) [7]X, savingsBal (float) [8]X, checkingBal (float) [9]X
+    //UPDATE:  saveOrChecking (string) [5]X, withdrawOrDeposit (string) [6]X, withdrawOrDepositAmt (float) [7]X
 
     //recall: vector<string> lineAData and vector<string> lineUData
 
     //put all firstName var in own vector (lineAData)
-    vector<string>firstName;
+    vector<string>firstNameStr;
 
     //every 2nd element
     for(i=1;i<lineAData.size();i+=5){
-        firstName.push_back(lineAData.at(i));
+        firstNameStr.push_back(lineAData.at(i));
     }
 
     //check firstName vector output
-    for(string abc:firstName){
+    for(string abc:firstNameStr){
         cout<<abc<<endl;
     }
 
@@ -294,16 +295,15 @@ cout<<endl;
         }
 
 
-
-
-
     }catch(invalid_argument& hi){
         //error is caught, value to cause error needs to be put in error vector
         savingsBalStr.push_back(lineAData.at(i));
+        //put error into error vector here
 
     }
     cout<<endl;
 
+    //checking if error was added to this temp vector via scanning output
     for(string hi:savingsBalStr){
         cout<<hi<<endl;
     }
@@ -313,6 +313,99 @@ cout<<endl;
     for(float pqr:savingsBalFloat){
         cout<<pqr<<endl;
     }
+
+    cout<<endl;
+
+    //now put all of checkingBal var in own vector then convert to float
+    vector<string>checkingBalStr;
+    vector<float>checkingBalFloat;
+
+    for(i=4;i<lineAData.size();i+=5){
+        checkingBalStr.push_back(lineAData.at(i));
+    }
+    //check output
+    for(string lol:checkingBalStr){
+        cout<<lol<<endl;
+    }
+    cout<<endl;
+
+    //convert checkingBal var from string to float now (dont need try/catch here for converting)
+    for(i=0;i<checkingBalStr.size();++i){
+        checkingBalFloat.push_back(stof(checkingBalStr.at(i)));
+    }
+
+    //check output
+    for(float jk:checkingBalFloat){
+        cout<<jk<<endl;
+    }
+    cout<<endl;
+
+    //now need to convert lineUData variables, put each one in their own vector
+    //start with savingOrChecking (string)
+    //initialize vector
+    vector<string>savingOrCheckingStr;
+
+    for(i=1;i<lineUData.size();i+=4){
+        savingOrCheckingStr.push_back(lineUData.at(i));
+    }
+
+    //check output
+    for(string yo:savingOrCheckingStr){
+        cout<<yo<<endl;
+    }
+    cout<<endl;
+
+
+    //now isolating next variable: withdrawOrDeposit (string)
+    //initializing vector
+    vector<string>withdrawOrDepositStr;
+
+    for(i=2;i<lineUData.size();i+=4){
+        withdrawOrDepositStr.push_back(lineUData.at(i));
+    }
+
+    //check output
+    for(string hello: withdrawOrDepositStr){
+        cout<<hello<<endl;
+    }
+
+    cout<<endl;
+    //now isolating withdrawOrDepositAmt (float), need to convert
+    //initializing vector
+    vector<string>withdrawOrDepositAmtStr;
+    vector<float>withdrawOrDepositAmtFloat;
+
+    //putting in string vector
+    for(i=3; i<lineUData.size();i+=4){
+        withdrawOrDepositAmtStr.push_back(lineUData.at(i));
+    }
+
+    //check output
+    for(string fml: withdrawOrDepositAmtStr){
+        cout<<fml<<endl;
+    }
+
+    cout<<endl;
+
+    //now converting to float
+    for(i=0;i<withdrawOrDepositAmtStr.size();++i){
+        withdrawOrDepositAmtFloat.push_back(stof(withdrawOrDepositAmtStr.at(i)));
+    }
+
+    //check output
+    for(float ok: withdrawOrDepositAmtFloat){
+        cout<<ok<<endl;
+    }
+
+
+
+    /////ERROR CHECKING ROUND 4: MAKING SURE THERE IS ENOUGH MONEY IN SAVINGS OR CHECKING WHEN WITHDRAWING
+
+
+
+
+
+
 
 
 
