@@ -129,6 +129,30 @@ KCBankReportLab1/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/KCBankReportLab1.dir/build.make CMakeFiles/KCBankReportLab1.dir/build
 .PHONY : KCBankReportLab1/fast
 
+KCBankReportModify.o: KCBankReportModify.cpp.o
+.PHONY : KCBankReportModify.o
+
+# target to build an object file
+KCBankReportModify.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/KCBankReportLab1.dir/build.make CMakeFiles/KCBankReportLab1.dir/KCBankReportModify.cpp.o
+.PHONY : KCBankReportModify.cpp.o
+
+KCBankReportModify.i: KCBankReportModify.cpp.i
+.PHONY : KCBankReportModify.i
+
+# target to preprocess a source file
+KCBankReportModify.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/KCBankReportLab1.dir/build.make CMakeFiles/KCBankReportLab1.dir/KCBankReportModify.cpp.i
+.PHONY : KCBankReportModify.cpp.i
+
+KCBankReportModify.s: KCBankReportModify.cpp.s
+.PHONY : KCBankReportModify.s
+
+# target to generate assembly for a file
+KCBankReportModify.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/KCBankReportLab1.dir/build.make CMakeFiles/KCBankReportLab1.dir/KCBankReportModify.cpp.s
+.PHONY : KCBankReportModify.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -162,6 +186,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... KCBankReportLab1"
+	@echo "... KCBankReportModify.o"
+	@echo "... KCBankReportModify.i"
+	@echo "... KCBankReportModify.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

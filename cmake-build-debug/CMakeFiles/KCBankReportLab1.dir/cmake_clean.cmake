@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/KCBankReportLab1.dir/KCBankReportModify.cpp.o"
   "CMakeFiles/KCBankReportLab1.dir/main.cpp.o"
   "KCBankReportLab1"
   "KCBankReportLab1.pdb"

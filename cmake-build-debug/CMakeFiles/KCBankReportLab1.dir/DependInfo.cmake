@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/Users/sogent/CLionProjects/KCBankReportLab1/KCBankReportModify.cpp" "/Users/sogent/CLionProjects/KCBankReportLab1/cmake-build-debug/CMakeFiles/KCBankReportLab1.dir/KCBankReportModify.cpp.o"
   "/Users/sogent/CLionProjects/KCBankReportLab1/main.cpp" "/Users/sogent/CLionProjects/KCBankReportLab1/cmake-build-debug/CMakeFiles/KCBankReportLab1.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")

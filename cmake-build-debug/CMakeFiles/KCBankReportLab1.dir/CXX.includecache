@@ -6,7 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/Users/sogent/CLionProjects/KCBankReportLab1/main.cpp
+/Users/sogent/CLionProjects/KCBankReportLab1/KCBankReportModify.cpp
+KCBankReportModify.h
+/Users/sogent/CLionProjects/KCBankReportLab1/KCBankReportModify.h
 iostream
 -
 fstream
@@ -16,5 +18,11 @@ vector
 sstream
 -
 stdexcept
+-
+
+/Users/sogent/CLionProjects/KCBankReportLab1/KCBankReportModify.h
+iostream
+-
+vector
 -
 
