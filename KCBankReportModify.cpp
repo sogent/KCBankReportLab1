@@ -54,65 +54,32 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
 
                 try{
 
-
-
                     tempKCBankRec.accountNum = stoi(fileData[1]);
                     int accountNum=stoi(fileData[1]);
-
                     accountExistCheck.push_back(accountNum);
-
-
-
 
                     tempKCBankRec.firstName=fileData[2];
 
-
                     tempKCBankRec.lastName=fileData[3];
 
-
-
                     tempKCBankRec.savingsBal = stof(fileData[4]);
-
-
 
                     tempKCBankRec.checkingBal = stof(fileData[5]);
 
 
-
-
-
-                    //KCBankRecVec.push_back(tempKCBankRec);
-
-
                     int p;
                     int q;
-                    int duplicateAccount;
                     for (q = 0; q < accountExistCheck.size(); ++q) {
                         for (p = q + 1; p < accountExistCheck.size(); ++p) {
                             if (accountExistCheck.at(q) == accountExistCheck.at(p)) {
-                                //duplicateAccount=KCBankRecVec.at(q).accountNum;
-
-
-
-
 
                                 throw runtime_error("already exists");
                             }
                         }
                     }
 
+
                     KCBankRecVec.push_back(tempKCBankRec);
-
-
-
-
-
-
-
-
-
-
-
 
 
                 }catch(invalid_argument& error1){
@@ -125,8 +92,6 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
                     KCBankRecErrors.push_back(tempKCBankRec);
 
                 }
-
-
             }
 
 
@@ -140,25 +105,17 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
                 float moneyAmount;
 
                 accountNumUpdate = stoi(fileData[1]);
+
                 SorC = fileData[2];
+
                 WorD = fileData[3];
+
                 moneyAmount = stof(fileData[4]);
-
-
-
-
-
-
-
-
-
-
 
 
                     for (i = 0; i < KCBankRecVec.size() ; ++i) {
 
                         try {
-
                             if (accountNumUpdate == KCBankRecVec.at(i).accountNum && (SorC == "S" && WorD == "W")) {
 
                                 if (moneyAmount > KCBankRecVec.at(i).savingsBal) {
@@ -185,7 +142,6 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
                         try {
                             if (accountNumUpdate == KCBankRecVec.at(i).accountNum && (SorC == "S" && WorD == "D")) {
                                 KCBankRecVec.at(i).savingsBal = KCBankRecVec.at(i).savingsBal + moneyAmount;
-
                             }
                         }catch(runtime_error& error2) {
                             cout<<KCBankRecVec.at(i).accountNum<<", "<<KCBankRecVec.at(i).firstName<<", "<<KCBankRecVec.at(i).lastName<<" ";
@@ -208,8 +164,6 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
                                 } else {
                                     KCBankRecVec.at(i).checkingBal = KCBankRecVec.at(i).checkingBal - moneyAmount;
                                 }
-
-
                             }
                         }catch(runtime_error& error3) {
                             cout<<KCBankRecVec.at(i).accountNum<<", "<<KCBankRecVec.at(i).firstName<<", "<<KCBankRecVec.at(i).lastName<<" ";
@@ -218,35 +172,29 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
                         }
 
 
-                            if (accountNumUpdate == KCBankRecVec.at(i).accountNum) {
-                                if (SorC == "C" && WorD == "D") {
-                                    KCBankRecVec.at(i).checkingBal = KCBankRecVec.at(i).checkingBal + moneyAmount;
+
+                        if (accountNumUpdate == KCBankRecVec.at(i).accountNum) {
+                            if (SorC == "C" && WorD == "D") {
+                                KCBankRecVec.at(i).checkingBal = KCBankRecVec.at(i).checkingBal + moneyAmount;
                                 }
                             }
-
 
 
                     }
 
 
-
+                    //Error check: if an account exists or not
                     try {
                         if (find(accountExistCheck.begin(), accountExistCheck.end(), accountNumUpdate) !=
                             accountExistCheck.end()) {
                             continue;
                         } else {
                             throw runtime_error("does not exist");
-
                         }
                     }catch(runtime_error& error7){
                         accountExistErrors.push_back(accountNumUpdate);
                         cout<<accountNumUpdate<<" "<<error7.what()<<endl;
                     }
-
-
-
-
-
 
 
             }
@@ -259,14 +207,9 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
     }
 
     inFS.close();
-
-
-
-
-
-
-
 }
+
+
 
 
 
