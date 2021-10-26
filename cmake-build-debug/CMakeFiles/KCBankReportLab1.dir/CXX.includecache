@@ -6,13 +6,9 @@
 
 #IncludeRegexTransform: 
 
+/Users/sogent/CLionProjects/KCBankReportLab1/KCBankReportModify.cpp
+KCBankReportModify.h
 /Users/sogent/CLionProjects/KCBankReportLab1/KCBankReportModify.h
-iostream
--
-vector
--
-
-/Users/sogent/CLionProjects/KCBankReportLab1/main.cpp
 iostream
 -
 fstream
@@ -23,6 +19,12 @@ sstream
 -
 stdexcept
 -
-KCBankReportModify.h
+algorithm
+-
+
 /Users/sogent/CLionProjects/KCBankReportLab1/KCBankReportModify.h
+iostream
+-
+vector
+-
 

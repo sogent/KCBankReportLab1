@@ -13,7 +13,7 @@ using namespace std;
 
 
 
-void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& KCBankRecErrors, vector<KCBankAccounts>& KCBankRecUpdate){
+void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& KCBankRecErrors, vector<KCBankAccounts>& KCBankRecUpdate){
     ifstream inFS;
     vector<string> fileData;
     string word;
@@ -28,29 +28,33 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
     vector<int>accountExistErrors;
 
     KCBankAccounts tempKCBankRec;
-    KCBankAccounts tempKCBankRec2Update;
 
 
+    //Open file
     inFS.open("/Users/sogent/CLionProjects/KCBankReportLab1/CS201PGM2.csv");
     if (!inFS.is_open()) {
         cout << "Could not open the file \"CS201PGM2.csv\"" << endl;
     }
-    int duplicateValue=0;
+
+    //Read file, first line by line
     getline(inFS, line);
     while (inFS.good()) {
+        //Parse then assign first character to variable
         firstChar = line.substr(0, 1);
+
         if (firstChar == "A" || firstChar == "U") {
+            //Clear for each loop
             fileData.clear();
+            //Copy line into string stream variable
             stringstream inSS(line);
 
-
+            //Parse line elements by commas then push into vector
             while(getline(inSS, line, ',')){
                 fileData.push_back(line);
-
             }
 
+            //Organize the data by discriminating by firstChar variable
             if(firstChar=="A"){
-
 
                 try{
 
@@ -79,7 +83,7 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
                     }
 
 
-                    KCBankRecVec.push_back(tempKCBankRec);
+                    KCBankRecAdd.push_back(tempKCBankRec);
 
 
                 }catch(invalid_argument& error1){
@@ -98,6 +102,9 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
 
 
 
+            //copy KCBankRecAdd vector values to KCBankRecUpdate values
+            KCBankRecUpdate=KCBankRecAdd;
+
             if(firstChar=="U") {
                 int accountNumUpdate;
                 string SorC;
@@ -113,26 +120,26 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
                 moneyAmount = stof(fileData[4]);
 
 
-                    for (i = 0; i < KCBankRecVec.size() ; ++i) {
+                    for (i = 0; i < KCBankRecAdd.size() ; ++i) {
 
                         try {
-                            if (accountNumUpdate == KCBankRecVec.at(i).accountNum && (SorC == "S" && WorD == "W")) {
+                            if (accountNumUpdate == KCBankRecUpdate.at(i).accountNum && (SorC == "S" && WorD == "W")) {
 
-                                if (moneyAmount > KCBankRecVec.at(i).savingsBal) {
+                                if (moneyAmount > KCBankRecAdd.at(i).savingsBal) {
                                     //update struct members to values that are throwing error
                                     //updated error values will be thrown to catch and added to KCBankRecErrors
-                                    tempKCBankRec.accountNum=KCBankRecVec.at(i).accountNum;
-                                    tempKCBankRec.firstName=KCBankRecVec.at(i).firstName;
-                                    tempKCBankRec.lastName=KCBankRecVec.at(i).lastName;
+                                    tempKCBankRec.accountNum=KCBankRecAdd.at(i).accountNum;
+                                    tempKCBankRec.firstName=KCBankRecAdd.at(i).firstName;
+                                    tempKCBankRec.lastName=KCBankRecAdd.at(i).lastName;
                                     throw runtime_error("does not have sufficient funds in savings account");
 
                                 } else {
-                                    KCBankRecVec.at(i).savingsBal = KCBankRecVec.at(i).savingsBal - moneyAmount;
+                                    KCBankRecAdd.at(i).savingsBal = KCBankRecAdd.at(i).savingsBal - moneyAmount;
                                 }
 
                             }
                         }catch(runtime_error& error) {
-                            cout<<KCBankRecVec.at(i).accountNum<<", "<<KCBankRecVec.at(i).firstName<<", "<<KCBankRecVec.at(i).lastName<<" ";
+                            cout<<KCBankRecAdd.at(i).accountNum<<", "<<KCBankRecAdd.at(i).firstName<<", "<<KCBankRecAdd.at(i).lastName<<" ";
                             cout << error.what() << endl;
                             KCBankRecErrors.push_back(tempKCBankRec);
                         }
@@ -140,11 +147,11 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
 
 
                         try {
-                            if (accountNumUpdate == KCBankRecVec.at(i).accountNum && (SorC == "S" && WorD == "D")) {
-                                KCBankRecVec.at(i).savingsBal = KCBankRecVec.at(i).savingsBal + moneyAmount;
+                            if (accountNumUpdate == KCBankRecAdd.at(i).accountNum && (SorC == "S" && WorD == "D")) {
+                                KCBankRecAdd.at(i).savingsBal = KCBankRecAdd.at(i).savingsBal + moneyAmount;
                             }
                         }catch(runtime_error& error2) {
-                            cout<<KCBankRecVec.at(i).accountNum<<", "<<KCBankRecVec.at(i).firstName<<", "<<KCBankRecVec.at(i).lastName<<" ";
+                            cout<<KCBankRecAdd.at(i).accountNum<<", "<<KCBankRecAdd.at(i).firstName<<", "<<KCBankRecAdd.at(i).lastName<<" ";
                             cout << error2.what() << endl;
                             KCBankRecErrors.push_back(tempKCBankRec);
                         }
@@ -152,30 +159,30 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
 
 
                         try {
-                            if ((accountNumUpdate == KCBankRecVec.at(i).accountNum) && (SorC == "C" && WorD == "W")) {
+                            if ((accountNumUpdate == KCBankRecAdd.at(i).accountNum) && (SorC == "C" && WorD == "W")) {
 
-                                if (moneyAmount > KCBankRecVec.at(i).checkingBal) {
+                                if (moneyAmount > KCBankRecAdd.at(i).checkingBal) {
                                     //update struct members to values that are throwing error
                                     //updated error values will be thrown to catch and added to KCBankRecErrors
-                                    tempKCBankRec.accountNum=KCBankRecVec.at(i).accountNum;
-                                    tempKCBankRec.firstName=KCBankRecVec.at(i).firstName;
-                                    tempKCBankRec.lastName=KCBankRecVec.at(i).lastName;
+                                    tempKCBankRec.accountNum=KCBankRecAdd.at(i).accountNum;
+                                    tempKCBankRec.firstName=KCBankRecAdd.at(i).firstName;
+                                    tempKCBankRec.lastName=KCBankRecAdd.at(i).lastName;
                                     throw runtime_error("does not have sufficient funds in checking account");
                                 } else {
-                                    KCBankRecVec.at(i).checkingBal = KCBankRecVec.at(i).checkingBal - moneyAmount;
+                                    KCBankRecAdd.at(i).checkingBal = KCBankRecAdd.at(i).checkingBal - moneyAmount;
                                 }
                             }
                         }catch(runtime_error& error3) {
-                            cout<<KCBankRecVec.at(i).accountNum<<", "<<KCBankRecVec.at(i).firstName<<", "<<KCBankRecVec.at(i).lastName<<" ";
+                            cout<<KCBankRecAdd.at(i).accountNum<<", "<<KCBankRecAdd.at(i).firstName<<", "<<KCBankRecAdd.at(i).lastName<<" ";
                             cout << error3.what() << endl;
                             KCBankRecErrors.push_back(tempKCBankRec);
                         }
 
 
 
-                        if (accountNumUpdate == KCBankRecVec.at(i).accountNum) {
+                        if (accountNumUpdate == KCBankRecAdd.at(i).accountNum) {
                             if (SorC == "C" && WorD == "D") {
-                                KCBankRecVec.at(i).checkingBal = KCBankRecVec.at(i).checkingBal + moneyAmount;
+                                KCBankRecAdd.at(i).checkingBal = KCBankRecAdd.at(i).checkingBal + moneyAmount;
                                 }
                             }
 
@@ -213,7 +220,7 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
 
 
 
-void addAccounts(vector<KCBankAccounts>& addAccountVec, vector<KCBankAccounts>& accountErrors){
+void addAccounts(vector<KCBankAccounts>& addAccountVec){
     ofstream outFS;
     int i;
     outFS.open("KCBankAccountReportSummary.txt");
@@ -231,20 +238,11 @@ void addAccounts(vector<KCBankAccounts>& addAccountVec, vector<KCBankAccounts>& 
 
 
         }
-        outFS<<endl;
-        outFS<<endl;
-
-        for(i=0;i<accountErrors.size();++i){
-            outFS<<accountErrors.at(i).accountNum<<" ";
-            outFS<<accountErrors.at(i).firstName<<" ";
-            outFS<<accountErrors.at(i).lastName<<" ";
-        }
 
 
         outFS.close();
-
     }
-    outFS.close();
+
 
 }
 
