@@ -19,6 +19,8 @@ sstream
 -
 stdexcept
 -
+algorithm
+-
 
 /Users/sogent/CLionProjects/KCBankReportLab1/KCBankReportModify.h
 iostream

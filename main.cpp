@@ -14,8 +14,9 @@ using namespace std;
 int main() {
     vector<KCBankAccounts> tempBankRec;
     vector<KCBankAccounts> tempBankRecErrors;
+    vector<KCBankAccounts> KCBankRecUpdate;
 
-    openReadFile(tempBankRec, tempBankRecErrors);
+    openReadFile(tempBankRec, tempBankRecErrors, KCBankRecUpdate);
 
     int i;
     for(i=0;i<tempBankRec.size();++i){
@@ -28,6 +29,8 @@ int main() {
         cout<<endl;
     }
 
+    cout<<"Account errors:"<<endl;
+
     for(i=0;i<tempBankRecErrors.size();++i){
         cout<<tempBankRecErrors.at(i).accountNum<<endl;
         cout<<tempBankRecErrors.at(i).firstName<<endl;
@@ -35,6 +38,19 @@ int main() {
         cout<<endl;
     }
 
+    cout<<"Account updates:"<<endl;
+    for(i=0;i<KCBankRecUpdate.size();++i){
+        cout<<KCBankRecUpdate.at(i).accountNum<<endl;
+        cout<<KCBankRecUpdate.at(i).firstName<<endl;
+        cout<<KCBankRecUpdate.at(i).lastName<<endl;
+        cout<<KCBankRecUpdate.at(i).savingsBal<<endl;
+        cout<<KCBankRecUpdate.at(i).checkingBal<<endl;
+        cout<<endl;
+    }
+
+   // addAccounts(KCBankRecUpdate, tempBankRecErrors);
+
+   // updateAccounts(KCBankRecUpdate, tempBankRecErrors);
     /*
     ifstream inFS;
     vector<string> fileData;

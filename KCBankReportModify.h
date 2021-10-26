@@ -17,5 +17,8 @@ struct KCBankAccounts{
 
 #ifndef KCBANKREPORTLAB1_KCBANKREPORTMODIFY_H
 #define KCBANKREPORTLAB1_KCBANKREPORTMODIFY_H
-void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& KCBankRecErrors);
+void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& KCBankRecErrors, vector<KCBankAccounts>& KCBankRecUpdate);
+void addAccounts(vector<KCBankAccounts>& addAccountVec, vector<KCBankAccounts>& accountErrors);
+void updateAccounts(vector<KCBankAccounts>& accountUpdates, vector<KCBankAccounts>& accountErrors);
+
 #endif //KCBANKREPORTLAB1_KCBANKREPORTMODIFY_H
