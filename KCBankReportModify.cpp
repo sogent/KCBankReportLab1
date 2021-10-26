@@ -23,7 +23,6 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
     vector<string> lineAData;
     vector<string> lineUData;
     vector<int> duplicateAccountError;
-    vector<float> dataTypeError;
     vector<int>accountExistCheck;
     vector<int>accountExistCheckUpdate;
     vector<int>accountExistErrors;
@@ -36,13 +35,14 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
     if (!inFS.is_open()) {
         cout << "Could not open the file \"CS201PGM2.csv\"" << endl;
     }
-
+    int duplicateValue=0;
     getline(inFS, line);
     while (inFS.good()) {
         firstChar = line.substr(0, 1);
         if (firstChar == "A" || firstChar == "U") {
             fileData.clear();
             stringstream inSS(line);
+
 
             while(getline(inSS, line, ',')){
                 fileData.push_back(line);
@@ -54,8 +54,14 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
 
                 try{
 
-                    tempKCBankRec.accountNum=stoi(fileData[1]);
-                    accountExistCheck.push_back(tempKCBankRec.accountNum);
+
+
+                    tempKCBankRec.accountNum = stoi(fileData[1]);
+                    int accountNum=stoi(fileData[1]);
+
+                    accountExistCheck.push_back(accountNum);
+
+
 
 
                     tempKCBankRec.firstName=fileData[2];
@@ -75,24 +81,32 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
 
 
 
+                    //KCBankRecVec.push_back(tempKCBankRec);
+
+
+                    int p;
+                    int q;
+                    int duplicateAccount;
+                    for (q = 0; q < accountExistCheck.size(); ++q) {
+                        for (p = q + 1; p < accountExistCheck.size(); ++p) {
+                            if (accountExistCheck.at(q) == accountExistCheck.at(p)) {
+                                //duplicateAccount=KCBankRecVec.at(q).accountNum;
+
+
+
+
+
+                                throw runtime_error("already exists");
+                            }
+                        }
+                    }
+
                     KCBankRecVec.push_back(tempKCBankRec);
 
 
 
 
 
-                        int p;
-                        int q;
-                        int duplicateAccount;
-                        for (q = 0; q < KCBankRecVec.size(); ++q) {
-                            for (p = q + 1; p < KCBankRecVec.size(); ++p) {
-                                if (KCBankRecVec.at(q).accountNum == KCBankRecVec.at(p).accountNum) {
-                                    throw runtime_error("already exists");
-                                    //also make sure to add result to the error vector
-                                    //duplicateAccount = addAccountNumInt.at(q);
-                                }
-                            }
-                        }
 
 
 
@@ -114,6 +128,7 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
 
 
             }
+
 
 
 
@@ -169,11 +184,6 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
 
                         try {
                             if (accountNumUpdate == KCBankRecVec.at(i).accountNum && (SorC == "S" && WorD == "D")) {
-
-                                if (accountNumUpdate != KCBankRecVec.at(i).accountNum) {
-                                    throw runtime_error("does not exist");
-                                }
-
                                 KCBankRecVec.at(i).savingsBal = KCBankRecVec.at(i).savingsBal + moneyAmount;
 
                             }
@@ -229,6 +239,7 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& 
 
                         }
                     }catch(runtime_error& error7){
+                        accountExistErrors.push_back(accountNumUpdate);
                         cout<<accountNumUpdate<<" "<<error7.what()<<endl;
                     }
 
