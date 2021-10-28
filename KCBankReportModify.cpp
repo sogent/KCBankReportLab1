@@ -12,8 +12,22 @@
 #include <iomanip>
 using namespace std;
 
-
-
+/*
+ * Precondition:
+ * 1.expects csv file with data according to following template:
+ * A,accountNum,firstName,lastName,savingsAccountBalance,checkingAccountBalance
+ * U,accountNum,S/C,W/D,moneyAmount
+ * 2.expects 3 empty vectors of struct type KCBankAccounts
+ *
+ * Postcondition:
+ * 1.file will be parsed through and checked for errors including data type conversion errors, account duplication errors,
+ * account validation errors (if an account exists or not) and account overdrawn errors (if an account has enough funds to
+ * withdraw specified amount)
+ * 2.KCBankRecAdd vector will be loaded with error-free data of list of accounts that need to be added
+ * 3.KCBankRecUpdate vector will be loaded with error-free data of list of accounts that have been successfully updated
+ * 4.KCBankErrorComments will be loaded with the values of the members of the structs that had caused errors along
+ * with their respective error comments
+ */
 void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& KCBankRecUpdate, vector<string>& KCBankErrorComments){
     ifstream inFS;
     vector<string> fileData;
@@ -23,6 +37,7 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
     int i;
     vector<int>accountExistCheck;
     KCBankAccounts tempKCBankRec;
+
 
 
     //Open file
@@ -52,10 +67,14 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
             //Organize the data by discriminating by firstChar variable value
             if(firstChar=="A"){
 
+                //begin assigning values to members of structs
                 try{
 
-
                     tempKCBankRec.accountNum = stoi(fileData[1]);
+
+                    //this vector is used for error checking, specifically
+                    //if an account does or does not exist in the list of added accounts
+                    // from the list of accounts to be updated
                     int accountNum=stoi(fileData[1]);
                     accountExistCheck.push_back(accountNum);
 
@@ -63,9 +82,7 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
 
                     tempKCBankRec.lastName=fileData[3];
 
-
                     tempKCBankRec.savingsBal = stof(fileData[4]);
-
 
                     tempKCBankRec.checkingBal = stof(fileData[5]);
 
@@ -76,24 +93,36 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
                     for (q = 0; q < accountExistCheck.size(); ++q) {
                         for (p = q + 1; p < accountExistCheck.size(); ++p) {
                             if (accountExistCheck.at(q) == accountExistCheck.at(p)) {
-
                                 throw runtime_error(" already exists");
                             }
                         }
                     }
 
-
-                    //push values into vector that is for adding the accounts
+                    //Now that the struct members have been assigned values, we're
+                    //pushing these values (specifically, from the list of accounts to add) into a vector
                     KCBankRecAdd.push_back(tempKCBankRec);
 
-                    //push values into vector that will be added but then updated
+
+                    //sorting the vector of structs from the list of accounts to add
+                    sort(KCBankRecAdd.begin(), KCBankRecAdd.end(), [](KCBankAccounts a, KCBankAccounts b){
+                        return a.accountNum < b.accountNum;
+                    });
+
+
+
+                    //now pushing values into vector that will be used solely for error tracking,
+                    //trying to break up putting errors and their comments in error vector in two different
+                    //functions yielded unwanted results
                     KCBankRecUpdate.push_back(tempKCBankRec);
 
-
+                //data type conversion failure catch
                 }catch(invalid_argument& error1){
-                    //cout<<firstChar<<", "<<tempKCBankRec.accountNum<<", "<<tempKCBankRec.firstName<<", "<<tempKCBankRec.lastName<<", "<<tempKCBankRec.savingsBal<<", "<<tempKCBankRec.checkingBal;
+                    //setting up specific error message for data type conversion failure
                     string unIDError = " has an unidentified error";
 
+                    //adding what error was caught to an error vector of strings
+                    //so that comments specific to error and what value is throwing said
+                    //error can also be passed to vector
                     KCBankErrorComments.push_back(firstChar);
                     KCBankErrorComments.emplace_back(", ");
                     KCBankErrorComments.push_back(to_string(tempKCBankRec.accountNum));
@@ -104,22 +133,35 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
                     KCBankErrorComments.push_back(unIDError);
                     KCBankErrorComments.emplace_back("\n");
 
+                    //if an account from the add accounts list already exists error catch
                 }catch(runtime_error& error2){
-
+                    //adding what error was caught to an error vector of strings
+                    //so that comments specific to error and what value is throwing said
+                    //error can also be passed to vector
                     KCBankErrorComments.push_back(to_string(tempKCBankRec.accountNum));
                     KCBankErrorComments.emplace_back(error2.what());
                     KCBankErrorComments.emplace_back("\n");
                 }
             }
 
-            //up to this point, we have added the accounts while also stripping away accounts with errors
+            //Up to this point, we have pushed the accounts from the list of accounts to be added
+            // to a vector of structs while also stripping away accounts
+            // with errors such as unidentified errors (data type conversion errors) and if an account from the
+            //add accounts list has been repeated and placed these errors into a vector of errors.
+            //We have also sorted the vector of structs so that the accounts will now be in
+            //ascending order according to their account number.
 
 
 
+            //The rest of this code is used for purposes of catching the rest of the errors
+            //associated with the list of accounts needing to be updated
 
-
-
+            //Organize the data by discriminating by firstChar variable value
             if(firstChar=="U") {
+
+                //Now assigning the data from the lines beginning with U
+                //with their own variables so that we may use that information
+                //to properly update the vector struct members
                 int accountNumUpdate;
                 string SorC;
                 string WorD;
@@ -133,15 +175,20 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
 
                 moneyAmount = stof(fileData[4]);
 
-
+                    //lines of code within the loop of KCBankRecUpdate so that the value of the members accountNum
+                    // from the vector of structs can simultaneously be compared to the value of accountNumUpdate
+                    // according to the current loop
                     for (i = 0; i < KCBankRecUpdate.size() ; ++i) {
 
+                        //Error check: making sure the account that needs to be updated has enough
+                        //funds to be withdrawn from savings account
+                        //if not, the value throwing error will be put into KCBankErrorComments vector
                         try {
                             if (accountNumUpdate == KCBankRecUpdate.at(i).accountNum && (SorC == "S" && WorD == "W")) {
 
                                 if (moneyAmount > KCBankRecUpdate.at(i).savingsBal) {
-                                    //update struct members to values that are throwing error
-                                    //updated error values will be thrown to catch and added to KCBankRecErrors
+                                    //update struct members to values that are throwing error so that
+                                    //updated error values will be thrown to catch and added to KCBankErrorComments
                                     tempKCBankRec.accountNum=KCBankRecUpdate.at(i).accountNum;
                                     tempKCBankRec.firstName=KCBankRecUpdate.at(i).firstName;
                                     tempKCBankRec.lastName=KCBankRecUpdate.at(i).lastName;
@@ -153,25 +200,31 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
 
                             }
                         }catch(runtime_error& error5) {
-
+                            //adding what error was caught to an error vector of strings
+                            //so that comments specific to error and what value is throwing said
+                            //error can also be passed to vector
                             KCBankErrorComments.push_back(to_string(KCBankRecUpdate.at(i).accountNum));
                             KCBankErrorComments.emplace_back(error5.what());
                         }
 
 
-
+                        //Depositing funds to savings account of account that needs to be updated
+                        //as specified by value of accountNumUpdate in current loop
+                        //while simultaneously iterating through the vector of structs
                         if (accountNumUpdate == KCBankRecUpdate.at(i).accountNum && (SorC == "S" && WorD == "D")) {
                             KCBankRecUpdate.at(i).savingsBal = KCBankRecUpdate.at(i).savingsBal + moneyAmount;
                         }
 
 
-
+                        //Error check: making sure the account that needs to be updated has enough
+                        //funds to be withdrawn from checking account
+                        //if not, the value throwing error will be put into KCBankErrorComments vector
                         try {
                             if ((accountNumUpdate == KCBankRecUpdate.at(i).accountNum) && (SorC == "C" && WorD == "W")) {
 
                                 if (moneyAmount > KCBankRecUpdate.at(i).checkingBal) {
-                                    //update struct members to values that are throwing error
-                                    //updated error values will be thrown to catch and added to KCBankRecErrors
+                                    //update struct members to values that are throwing error so that
+                                    //updated error values will be thrown to catch and added to KCBankErrorComments
                                     tempKCBankRec.accountNum=KCBankRecUpdate.at(i).accountNum;
                                     tempKCBankRec.firstName=KCBankRecUpdate.at(i).firstName;
                                     tempKCBankRec.lastName=KCBankRecUpdate.at(i).lastName;
@@ -181,25 +234,31 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
                                 }
                             }
                         }catch(runtime_error& error3) {
+                            //adding what error was caught to an error vector of strings
+                            //so that comments specific to error and what value is throwing said
+                            //error can also be passed to vector
                             KCBankErrorComments.push_back(to_string(KCBankRecUpdate.at(i).accountNum));
                             KCBankErrorComments.emplace_back(error3.what());
                             KCBankErrorComments.emplace_back("\n");
-
                         }
 
 
-
+                        //Depositing funds to checking account of account that needs to be updated
+                        //as specified by value of accountNumUpdate in current loop
+                        //while simultaneously iterating through the vector of structs
                         if (accountNumUpdate == KCBankRecUpdate.at(i).accountNum) {
                             if (SorC == "C" && WorD == "D") {
                                 KCBankRecUpdate.at(i).checkingBal = KCBankRecUpdate.at(i).checkingBal + moneyAmount;
                                 }
                             }
 
-
                     }
 
 
-                    //Error check: if an account exists or not
+                    //Error check: iterating through vector of account numbers from the add account list
+                    //while using the current loops value of accountNumUpdate as a key to see
+                    //if an account from the update account list exists or not in the list of accounts that have
+                    //already been added
                     try {
                         if (find(accountExistCheck.begin(), accountExistCheck.end(), accountNumUpdate) !=
                             accountExistCheck.end()) {
@@ -208,29 +267,30 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
                             throw runtime_error(" does not exist");
                         }
                     }catch(runtime_error& error7){
+                        //adding what error was caught to an error vector of strings
+                        //so that comments specific to error and what value is throwing said
+                        //error can also be passed to vector
                        KCBankErrorComments.push_back(to_string(accountNumUpdate));
                        KCBankErrorComments.emplace_back(error7.what());
                        KCBankErrorComments.emplace_back("\n");
 
                     }
 
-
             }
-
-
-
-
         }
-
         getline(inFS, line);
     }
-
     inFS.close();
 }
 
 
-
-
+/*
+ * Precondition:
+ *
+ *
+ *
+ * Postcondition:
+ */
 //this function simply adds the accounts from the add account list to the new file
 void addAccounts(vector<KCBankAccounts>& addAccountVec){
     ofstream outFS;
@@ -256,13 +316,17 @@ void addAccounts(vector<KCBankAccounts>& addAccountVec){
 
 
         }
-
         outFS.close();
     }
-
-
 }
 
+
+/*
+ *
+ * Precondition:
+ *
+ * Postcondition:
+ */
 //this function takes the vector of structs with the updated account information and updates the account record file
 void updateAccounts(vector<KCBankAccounts>& KCBankAccountVecToUpdate){
     ifstream inFS;
@@ -403,12 +467,15 @@ void updateAccounts(vector<KCBankAccounts>& KCBankAccountVecToUpdate){
 
     }
     inFS.close();
-
-
 }
 
 
-
+/*
+ *
+ * Precondition:
+ *
+ * Postcondition:
+ */
 void printBankAccounts(vector<KCBankAccounts>& updatedAccountRec) {
     ofstream outFS;
     int i;
@@ -463,17 +530,10 @@ void printErrorLog(vector<string>& KCBankErrorComments){
         outFS<<"Bank of Kansas City"<<endl;
         outFS<<"Error Log"<<endl;
         for(i=0;i<KCBankErrorComments.size();++i){
-            //cout<<KCBankErrorComments.at(i);
             outFS<<KCBankErrorComments.at(i);
         }
 
 
         outFS.close();
     }
-
-
-
-
-
-
 }
