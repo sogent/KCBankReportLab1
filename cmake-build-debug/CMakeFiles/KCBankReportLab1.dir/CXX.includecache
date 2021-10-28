@@ -21,10 +21,28 @@ stdexcept
 -
 algorithm
 -
+iomanip
+-
 
 /Users/sogent/CLionProjects/KCBankReportLab1/KCBankReportModify.h
 iostream
 -
 vector
 -
+iomanip
+-
+
+/Users/sogent/CLionProjects/KCBankReportLab1/main.cpp
+iostream
+-
+fstream
+-
+vector
+-
+sstream
+-
+stdexcept
+-
+KCBankReportModify.h
+/Users/sogent/CLionProjects/KCBankReportLab1/KCBankReportModify.h
 

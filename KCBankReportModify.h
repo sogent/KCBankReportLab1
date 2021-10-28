@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include <vector>
+#include<iomanip>
 using namespace std;
 
 struct KCBankAccounts{
@@ -18,9 +19,9 @@ struct KCBankAccounts{
 
 #ifndef KCBANKREPORTLAB1_KCBANKREPORTMODIFY_H
 #define KCBANKREPORTLAB1_KCBANKREPORTMODIFY_H
-void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& KCBankRecUpdate, vector<string>& KCBankErrorComments, vector<string>& updateData);
+void openReadFile(vector<KCBankAccounts>& KCBankRecVec, vector<KCBankAccounts>& KCBankRecUpdate, vector<string>& KCBankErrorComments);
 void addAccounts(vector<KCBankAccounts>& addAccountVec);
-void updateAccounts(vector<KCBankAccounts>& updateAccountVec, vector<string>& KCBankErrorComments);
+void updateAccounts(vector<KCBankAccounts>& KCBankAccountVecToUpdate);
 void printBankAccounts(vector<KCBankAccounts>& updatedAccountRec);
 void printErrorLog(vector<string>& KCBankErrorComments);
 

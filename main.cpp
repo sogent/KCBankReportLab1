@@ -16,10 +16,10 @@ int main() {
     vector<string> KCBankErrorComments;
     vector<string>updateData;
 
-    openReadFile(KCBankRecAdd, KCBankRecUpdate, KCBankErrorComments, updateData);
+    openReadFile(KCBankRecAdd, KCBankRecUpdate, KCBankErrorComments);
     addAccounts(KCBankRecAdd);
-    updateAccounts(KCBankRecUpdate, updateData);
-    //printBankAccounts(KCBankRecUpdate);
+    updateAccounts(KCBankRecAdd);
+    printBankAccounts(KCBankRecAdd);
     printErrorLog(KCBankErrorComments);
 
     cout<<endl;
