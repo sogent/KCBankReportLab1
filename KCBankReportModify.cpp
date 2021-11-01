@@ -37,6 +37,7 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
     int i;
     vector<int>accountExistCheck;
     KCBankAccounts tempKCBankRec;
+    vector<KCBankAccounts>tempKCBankRecAdd;
 
 
 
@@ -44,7 +45,10 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
     inFS.open("/Users/sogent/CLionProjects/KCBankReportLab1/CS201PGM2.csv");
     if (!inFS.is_open()) {
         cout << "Could not open the file \"CS201PGM2.csv\"" << endl;
+    }else{
+        cout<< "\"CS201PGM2.csv\" has been successfully opened"<<endl;
     }
+    cout<<"Importing data..."<<endl;
 
     //Read file, this reads in the very first line of the data
     getline(inFS, line);
@@ -98,6 +102,7 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
                         }
                     }
 
+
                     //Now that the struct members have been assigned values, we're
                     //pushing these values (specifically, from the list of accounts to add) into a vector
                     KCBankRecAdd.push_back(tempKCBankRec);
@@ -107,6 +112,8 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
                     sort(KCBankRecAdd.begin(), KCBankRecAdd.end(), [](KCBankAccounts a, KCBankAccounts b){
                         return a.accountNum < b.accountNum;
                     });
+
+
 
 
 
@@ -281,15 +288,19 @@ void openReadFile(vector<KCBankAccounts>& KCBankRecAdd, vector<KCBankAccounts>& 
         getline(inFS, line);
     }
     inFS.close();
+    cout<< "\"CS201PGM2.csv\" has been successfully closed"<<endl;
+    cout<<endl;
 }
 
 
 /*
  * Precondition:
- *
- *
+ * function expects vector of type KCBankAccounts that has been first been passed through the function openReadFile
+ * -data in vector should consist only of the accounts that needed to be added as directed by csv file "CS201PGM2.csv"
  *
  * Postcondition:
+ * function should open a .txt file titled "KCBankAccountReportSummary.txt" that consists of the data of the
+ * bank accounts which were added
  */
 //this function simply adds the accounts from the add account list to the new file
 void addAccounts(vector<KCBankAccounts>& addAccountVec){
@@ -298,6 +309,8 @@ void addAccounts(vector<KCBankAccounts>& addAccountVec){
     outFS.open("KCBankAccountReportSummary.txt");
     if (!outFS.is_open()) {
         cout << "Could not open the file \"KCBankAccountReportSummary.txt\"" << endl;
+    }else{
+        cout<<"\"KCBankAccountReportSummary.txt\" has been successfully opened"<<endl;
     }
     while (outFS.is_open()) {
         //initialize account total variable
@@ -316,18 +329,25 @@ void addAccounts(vector<KCBankAccounts>& addAccountVec){
 
 
         }
+        cout<<"Updating file with accounts..."<<endl;
         outFS.close();
+        cout<<"\"KCBankAccountReportSummary.txt\" has been successfully closed"<<endl;
+        cout<<endl;
+        cout<<endl;
     }
 }
 
 
 /*
- *
  * Precondition:
+ * function expects vector of type KCBankAccounts that has first been passed through the function openRealFile
+ * the vector expected should be the vector that currently has the bank accounts which were directed to be added
  *
  * Postcondition:
+ * vector which previously had data of bank accounts which were added now has vector of bank accounts that
+ * were previously added, and if directed, are now updated
  */
-//this function takes the vector of structs with the updated account information and updates the account record file
+//this function takes the vector of structs with the added account information and updates the accounts if needed
 void updateAccounts(vector<KCBankAccounts>& KCBankAccountVecToUpdate){
     ifstream inFS;
     vector<string> fileData;
@@ -463,18 +483,19 @@ void updateAccounts(vector<KCBankAccounts>& KCBankAccountVecToUpdate){
         }
         getline(inFS, line);
 
-
-
     }
     inFS.close();
 }
 
 
 /*
- *
  * Precondition:
+ * function expects vector of type KCBankAccounts which was previously passed through the function updateAccounts
  *
  * Postcondition:
+ * function opens a new text file named "KCBankAccountReportSummary" and outputs data from expected vector into
+ * the new file
+ * Note: file should be formatted
  */
 void printBankAccounts(vector<KCBankAccounts>& updatedAccountRec) {
     ofstream outFS;
@@ -482,6 +503,8 @@ void printBankAccounts(vector<KCBankAccounts>& updatedAccountRec) {
     outFS.open("KCBankAccountReportSummaryUpdated.txt");
     if (!outFS.is_open()) {
         cout << "Could not open the file \"KCBankAccountReportSummaryUpdated.txt\"" << endl;
+    }else{
+        cout<<"\"KCBankAccountReportSummaryUpdated.txt\" has been successfully opened"<<endl;
     }
 
     float accountUpdateTotal;
@@ -507,13 +530,25 @@ void printBankAccounts(vector<KCBankAccounts>& updatedAccountRec) {
 
 
         }
-
+        cout<<"Updating accounts in file..."<<endl;
         outFS.close();
+        cout<<"\"KCBankAccountReportSummaryUpdated.txt\" has been successfully closed"<<endl;
+        cout<<endl;
+        cout<<endl;
     }
 
 }
 
 
+/*
+ * Precondition:
+ * function expects vector of type string which has been previously passed through the function openReadFile
+ *
+ * Postcondition:
+ * function opens .txt file titled "KCBankAccountReportSummaryUpdated.txt" in append mode then appends the data
+ * from the vector passed in the function to the end of the data which already exists
+ * in the file "KCBankAccountReportSummaryUpdated.txt"
+ */
 void printErrorLog(vector<string>& KCBankErrorComments){
     ofstream outFS;
     int i;
@@ -522,6 +557,8 @@ void printErrorLog(vector<string>& KCBankErrorComments){
     outFS.open("/Users/sogent/CLionProjects/KCBankReportLab1/cmake-build-debug/KCBankAccountReportSummaryUpdated.txt", ios::app);
     if (!outFS.is_open()) {
         cout << "Could not open the file \"KCBankAccountReportSummaryUpdated.txt\"" << endl;
+    }else{
+        cout<<"\"KCBankAccountReportSummaryUpdated.txt\" has been successfully reopened"<<endl;
     }
 
     while(outFS.is_open()){
@@ -533,7 +570,10 @@ void printErrorLog(vector<string>& KCBankErrorComments){
             outFS<<KCBankErrorComments.at(i);
         }
 
-
+        cout<<"Updating file to include Error Log..."<<endl;
         outFS.close();
+        cout<<"\"KCBankAccountReportSummaryUpdated.txt\" has been successfully closed"<<endl;
+        cout<<endl;
+        cout<<endl;
     }
 }
